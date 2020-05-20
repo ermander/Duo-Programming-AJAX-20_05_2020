@@ -5,7 +5,10 @@
   <!--
         PICTURE ALBUM EXERCISE - PAIR PROGRAMMING
 
-        As it is a pair programming exercise, you must create a shared repository in which the first developer will be implementing odd exercises, other developer will implement even. For each exercise you must create a dedicated git branch. When you complete an exercise in pair programming, you must merge that branch into master, then the other developer will fetch & pull and only then he can solve his exercise with same modalities, and you will continue in this way.
+        As it is a pair programming exercise, you must create a shared repository in which the first developer will be implementing odd exercises, 
+        other developer will implement even. 
+        For each exercise you must create a dedicated git branch. When you complete an exercise in pair programming, you must merge that branch into master, 
+        then the other developer will fetch & pull and only then he can solve his exercise with same modalities, and you will continue in this way.
 
         Starting from the current "base" bootstrap layout, implement the following exercises:
 
@@ -90,6 +93,9 @@
         font-size: 3.5rem;
       }
     }
+    .card-img-top{
+        height: 12rem !important;
+    }
   </style>
 </head>
 
@@ -145,7 +151,7 @@
           This page will dynamically load pictures from the web, and display them in a cool way!
         </p>
         <p>
-          <a href="#" class="btn btn-primary my-2">Load Images</a>
+          <a href="#" class="btn btn-primary my-2" onclick="loadingImages()">Load Images</a>
           <a href="#" class="btn btn-secondary my-2">Load Secondary Images</a>
         </p>
       </div>
@@ -450,6 +456,30 @@
   </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+  <script>
+      function loadingImages(query){
+          fetch("http://www.splashbase.co/api/v1/images/search?query=car")
+          .then(response => response.json())
+          .then(parsedJson => {
+              let imagesArray = parsedJson.images
+              let svgs = document.querySelectorAll('.card svg')
+              let cardBody = document.querySelectorAll('.card-body')
+              let cards = document.querySelectorAll('.card')
+              let numberOfImages = svgs.length
+              let requiredImages = imagesArray.slice(0,numberOfImages)
+              for(let i=0;i<cards.length;i++){
+                  svgs[i].remove()
+                let image = document.createElement('img')
+                image.classList.add('card-img-top')
+                image.setAttribute('src',requiredImages[i].url)
+                image = cards[i].insertBefore(image,cardBody[i])
+              }
+              
+          }
+          
+          )
+      }
   </script>
 </body>
 
